@@ -6,7 +6,6 @@ import example.com.domain.model.TokenConfig
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
-import io.ktor.server.response.*
 import org.koin.ktor.ext.inject
 
 fun Application.configureSecurity() {
@@ -17,8 +16,7 @@ fun Application.configureSecurity() {
         jwt {
             realm = this@configureSecurity.environment.config.property("jwt.realm").getString()
             verifier(
-                JWT
-                    .require(Algorithm.HMAC256(token.secret))
+                JWT.require(Algorithm.HMAC256(token.secret))
                     .withAudience(token.audience)
                     .withIssuer(token.issuer)
                     .build()

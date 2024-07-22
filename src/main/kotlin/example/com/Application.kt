@@ -23,7 +23,7 @@ fun Application.module() {
                     TokenConfig(
                         issuer = environment.config.property("jwt.issuer").getString(),
                         audience = environment.config.property("jwt.audience").getString(),
-                        expiresIn = 1000L * 60L * 60L,
+                        expiresIn = 1000L * 60L * 60L, //1hour
                         secret = System.getenv("JWT_SECRET")
                     )
                 }
@@ -35,5 +35,5 @@ fun Application.module() {
     configureMonitoring()
     configureHTTP()
     configureSecurity()
-    configureRouting()
+    configureAuthRouting()
 }

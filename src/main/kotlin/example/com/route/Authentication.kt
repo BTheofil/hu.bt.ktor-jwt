@@ -25,7 +25,7 @@ fun Route.signup() {
     val userDataSource by inject<MongoRepository>()
 
     post("signup") {
-        val request = call.receiveOrNull<AuthRequest>() ?: kotlin.run {
+        val request = runCatching<AuthRequest?> { call.receiveNullable<AuthRequest>() }.getOrNull() ?: kotlin.run {
             call.respond(HttpStatusCode.BadRequest)
             return@post
         }
@@ -61,7 +61,7 @@ fun Route.signIn() {
     val tokenConfig by inject<TokenConfig>()
 
     post("signin") {
-        val request = call.receiveOrNull<AuthRequest>() ?: kotlin.run {
+        val request = runCatching<AuthRequest?> { call.receiveNullable<AuthRequest>() }.getOrNull() ?: kotlin.run {
             call.respond(HttpStatusCode.BadRequest)
             return@post
         }
@@ -99,14 +99,6 @@ fun Route.signIn() {
                 token = token
             )
         )
-    }
-}
-
-fun Route.authenticate() {
-    authenticate {
-        get("authenticate") {
-            call.respond(HttpStatusCode.OK)
-        }
     }
 }
 
